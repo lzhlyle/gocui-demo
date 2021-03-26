@@ -2,9 +2,8 @@ package main
 
 import (
 	"fmt"
-	"log"
-
 	"github.com/jroimartin/gocui"
+	"log"
 )
 
 func main() {
