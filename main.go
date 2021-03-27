@@ -30,6 +30,8 @@ func layout(g *gocui.Gui) error {
 		if err != gocui.ErrUnknownView {
 			return err
 		}
+		v.FgColor = gocui.ColorYellow
+		//v.BgColor = gocui.ColorGreen
 		fmt.Fprintln(v, "Hello world!")
 	}
 	return nil
