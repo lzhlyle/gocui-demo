@@ -2,9 +2,10 @@ package main
 
 import (
 	"fmt"
-	"github.com/jroimartin/gocui"
 	"log"
 	"time"
+
+	"github.com/jroimartin/gocui"
 )
 
 func main() {
@@ -29,24 +30,25 @@ func main() {
 	}
 }
 
-var side = 2
-
 func layout(g *gocui.Gui) error {
 	maxX, maxY := g.Size()
+	side := 2
 	x0, y0 := maxX/2-6*side, maxY/2-2*side
 	for i := 0; i < 3; i++ {
 		for j := 0; j < 3; j++ {
-			v, err := g.SetView(fmt.Sprintf("cell-%d-%d", i, j), x0+i*3*side, y0+j*side, x0+i*3*side+3*side, y0+j*side+side)
+			_, err := g.SetView(fmt.Sprintf("cell-%d-%d", i, j), x0+i*3*side, y0+j*side, x0+i*3*side+3*side, y0+j*side+side)
 			if err != nil && err != gocui.ErrUnknownView {
 				return err
 			}
-			v.Overwrite = true
 		}
 	}
 	return nil
 }
 
-var step = 0
+var (
+	step   = 0
+	finish = false
+)
 
 func click(g *gocui.Gui, v *gocui.View) error {
 	if finish {
@@ -73,8 +75,6 @@ func click(g *gocui.Gui, v *gocui.View) error {
 	return nil
 }
 
-var finish = false
-
 func win(g *gocui.Gui, winner string) error {
 	finish = true
 	time.Sleep(1 * time.Second)
@@ -100,6 +100,7 @@ func restart(g *gocui.Gui, v *gocui.View) error {
 		v.Clear()
 	}
 	step = 0
+	finish = false
 	g.DeleteKeybinding("", gocui.KeyEnter, gocui.ModNone)
 	return nil
 }
